@@ -1,5 +1,5 @@
 require "sinatra"
-require 'sinatra/flash'
+#require 'sinatra/flash'
 require_relative "authentication.rb"
 
 #the following urls are included in authentication.rb
@@ -27,10 +27,10 @@ get "/search" do
 end
 
 get "/sign_up" do 
-	erb: sign_up
+	erb :sign_up
 end
 
-get "/rent"
+get "/rent" do
 	#authenticate!
 	erb :rent
 end
