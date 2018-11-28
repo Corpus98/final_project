@@ -16,7 +16,22 @@ get "/" do
 end
 
 
-get "/dashboard" do
-	authenticate!
-	erb :dashboard
+get "/login" do
+	
+	erb :login
 end
+
+get "/search" do 
+	#authenticate!
+	erb :search
+end
+
+get "/sign_up" do 
+	erb: sign_up
+end
+
+get "/rent"
+	#authenticate!
+	erb :rent
+end
+
