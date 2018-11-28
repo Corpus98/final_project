@@ -1,5 +1,5 @@
 # Starter Application
-<!-- this is a test -->
+
 ## Prerequisites
 
 1. Install Ruby via [RailsInstaller](http://railsinstaller.org/en) *(install latest version)*
