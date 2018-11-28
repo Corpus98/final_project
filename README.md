@@ -1,5 +1,5 @@
 # Starter Application
-
+<!-- this is a test -->
 ## Prerequisites
 
 1. Install Ruby via [RailsInstaller](http://railsinstaller.org/en) *(install latest version)*
@@ -38,7 +38,7 @@ To define a URL in which the person must be signed in to view, use the `authenti
 For example:
 
 ```ruby
-get "/dashboard" do 
+get "/dashboard" do
   authenticate!
   erb :dashboard
 end
