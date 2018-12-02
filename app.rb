@@ -21,17 +21,30 @@ get "/login" do
 	erb :login
 end
 
+get "/sign_up" do 
+	erb :sign_up
+end
+
+get "/become_pro" do 
+	#!authenticate
+	if 
+		erb :become_pro
+
+	else
+		redirect "/"
+		
+	end
+
+end
 get "/search" do 
 	#authenticate!
 	erb :search
 end
 
-get "/sign_up" do 
-	erb :sign_up
-end
 
-get "/rent" do
+
+get "/rent_out" do
 	#authenticate!
-	erb :rent
+	erb :rent_out
 end
 
