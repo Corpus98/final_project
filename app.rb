@@ -55,15 +55,15 @@ post "/charge" do
 	  
 	  @charge_me = @amount * 0.10
 	  payout = Stripe::payout.create (
-	  	:amount 	 => @charge_me,
-	  	:description => 'sinatra',
+	  	:amount 	 =>@charge_me,
+	  	:description =>'sinatra',
 	  	:currency	 => #OUR CARD ID
 	  )
 
 	  @charge_um = @amount * 0.95
 	  payout = Stripe::payout.create (
-	  	:amount 	 => @charge_um,
-	  	:description => 'sinatra',
+	  	:amount 	 =>@charge_um,
+	  	:description =>'sinatra',
 	  	:currency	 => #USER CARD ID
 	  )
 
