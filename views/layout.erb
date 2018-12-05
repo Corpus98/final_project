@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Grandma's Attic</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<style type="text/css">
-		/* Move down content because we have a fixed navbar that is 3.5rem tall */
-		body {
-		  padding-top: 3.5rem;
-		}
-	</style>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="stylesheet" href="/stylesheets/style.css"
 </head>
+
 <body>
 
 	<%= erb :navigation %>
 
 	<main role="main">
 
-		<div class="container">
+		<div>
 			<% if flash[:success] %>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
 				  <%= flash[:success] %>
@@ -40,9 +39,10 @@
 	</main>
 
 
-    <footer class="container">
-      <p>&copy; Company 2017-2018</p>
-    </footer>
+    <footer class="container-fluid" id="fonts">
+			<h1>Grandma's Attic</h1>
+			<h3>Borrowing and Renting Made Easy!
+		</footer>
 
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
