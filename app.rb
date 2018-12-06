@@ -66,17 +66,20 @@ get "/upgradepro" do
 	end
 end
 
-get "/search" do
+post "/search" do
 	#authenticate!
-	erb :search
+	# @items = Item.all(:name.like => "%#{params[:search]}%")
+	#
+	# erb :search_results
+end
+
+get "/search" do
+	@items = Item.all(:name.like => "%#{params[:search]}%")
+
+	erb :search_results
 end
 
 
-
-# get "/rent_out" do
-# 	#authenticate!
-# 	erb :rent_out
-# end
 
 
 # Item CRUD
