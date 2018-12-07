@@ -31,12 +31,10 @@ get "/" do
 	erb :index
 end
 
-
 get "/dashboard" do
-	authenticate!
+	# authenticate!
 	erb :dashboard
 end
-
 
 # authentication views
 get "/login" do
@@ -55,8 +53,6 @@ get "successful_signup" do
 	erb :successful_signup
 end
 
-
-
 get "/upgradepro" do
 	#!authenticate
 	if
@@ -67,19 +63,47 @@ get "/upgradepro" do
 end
 
 post "/search" do
-	#authenticate!
-	# @items = Item.all(:name.like => "%#{params[:search]}%")
-	#
-	# erb :search_results
-end
-
-get "/search" do
-	@items = Item.all(:name.like => "%#{params[:search]}%")
+	@items = Item.select{ |thing| thing.name.include? params[:search].to_s }
+	#@items = Item.all { |thing| thing.name.include? params[:search].to_s }
 
 	erb :search_results
 end
 
+# # search
+# post "/search" do
+# 	#authenticate!
+# 	@query = Item.find(:name.like => "%#{params[:search]}%")
+#
+# 	erb :search_results
+# end
 
+# get "/search" do
+#
+# 	# searchResult = params[:search]
+# 	@items = Item.get(:name.like => "%#{params[:search]}%")
+#
+# 	erb :search_results
+# end
+
+
+
+
+
+
+# display all items
+get "/items" do
+
+	@items = Item.all
+	erb:item_page_all
+end
+# display individual items by id
+get "/items/:id" do
+
+	@items = Item.find(params[:id])
+	erb:item_page_all
+	# @item = Item.get(params[:id])
+	# erb:item_page_single
+end
 
 
 # Item CRUD
@@ -96,22 +120,37 @@ post "/item/create" do
     i.description = params[:description]
 		# i.location = params[:location]
 		# i.image = params[:image]
+		# i.created_at = Time.now
     i.save
-
-		return "successfully added item"
-  else
-    return "missing information"
+		redirect "/items"
+		# redirect back
 end
+
+# //////////////////////////////////////////////
 
 # update Item
-post "/item_update" do
+get "/item/:id/update" do
 
+	erb:item_update
 end
 
 
-# delete item
-# '/item/:id'
-delete '/item' do
-	Item.get(params[:id]).destroy
 
+post '/items/:id/update' do
+
+  @item = Item.get(params[:id])
+	@item.name = params[:name]
+	@item.description = params[:description]
+	@item.save
+	redirect "/items"
+end
+
+
+
+
+
+delete item
+delete '/items/:id' do
+
+  Item.get(params[:id]).destroy
 end
