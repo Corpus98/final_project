@@ -1,0 +1,11 @@
+<% if @items %>
+    <table>
+        <%@items.each do |i|%>
+        <tr valign="top">
+            <td><%=i.id%></td>
+            <td><%=i.name%></td>
+            <td><%=i.description%></td>
+        </tr>
+        <%end%>
+    </table>
+<% end %>

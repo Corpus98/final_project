@@ -38,7 +38,7 @@ To define a URL in which the person must be signed in to view, use the `authenti
 For example:
 
 ```ruby
-get "/dashboard" do
+get "/dashboard" do 
   authenticate!
   erb :dashboard
 end
