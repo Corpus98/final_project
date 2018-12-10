@@ -67,14 +67,9 @@ get "/become_pro" do
 end
 
 #get "/upgrade" do
-#	authenticate!
-#
-#	if current_user.pro? || current_user.administrator?
-#		flash[:error] = "Error: You are not eligible to upgrade."
-#		redirect "/"
-#	end
-#
-#	erb :pay
+	#authenticate!
+
+	#erb :"payment/pay"
 #end
 
 #post "/charge" do
