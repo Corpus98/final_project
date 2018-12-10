@@ -61,12 +61,9 @@ get "/all_posts" do
 end
 
 get "/become_pro" do 
-	authenticate!
-	if 
+	#authenticate!
 		erb :"payment/become_pro"
-	else
-		redirect "/"
-	end
+	
 end
 
 #get "/upgrade" do
