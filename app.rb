@@ -97,13 +97,20 @@ get "/items" do
 	erb:item_page_all
 end
 # display individual items by id
-get "/items/:id" do
+get "/item/:id" do
 
-	@items = Item.find(params[:id])
-	erb:item_page_all
-	# @item = Item.get(params[:id])
+	@item1 = Item.get(params[:id])
+	erb :item_page_single
+	# @item = Item.select{ |thing| thing.id.include? params[:id].to_i}
 	# erb:item_page_single
 end
+
+# delete item
+delete '/items/:id' do
+
+  Item.get(params[:id]).destroy
+end
+
 
 
 # Item CRUD
@@ -134,6 +141,12 @@ get "/item/:id/update" do
 	erb:item_update
 end
 
+# update Profile
+get "profile/update/13" do
+	"hello world"
+	# erb:profile_update
+end
+
 
 
 post '/items/:id/update' do
@@ -143,14 +156,4 @@ post '/items/:id/update' do
 	@item.description = params[:description]
 	@item.save
 	redirect "/items"
-end
-
-
-
-
-
-delete item
-delete '/items/:id' do
-
-  Item.get(params[:id]).destroy
 end
