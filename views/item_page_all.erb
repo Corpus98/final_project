@@ -6,6 +6,13 @@
             <td><%=i.name%></td>
             <td><%=i.description%></td>
             <td><a href="/item/<%= i.id %>/update" class="btn btn-warning">Update Item</a></td>
+
+            <td>
+            <form class="" action="/item/<%=i.id %>" method="POST">
+             <button type="submit" name="button" class="btn btn-danger">Delete</button>
+           </form>
+         </td>
+
         </tr>
         <%end%>
     </table>
