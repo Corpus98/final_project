@@ -157,7 +157,7 @@ post "/item/create" do
     i.name = params[:name]
     i.description = params[:description]
 		# i.location = params[:location]
-		# i.image = params[:image]
+	#i.image = params[:image]
 		# i.created_at = Time.now
     i.save
 		redirect "/items"
@@ -176,6 +176,7 @@ post '/items/:id/update' do
   @item = Item.get(params[:id])
 	@item.name = params[:name]
 	@item.description = params[:description]
+	#@item.image = params[:image]
 	@item.save
 	redirect "/items"
 end
