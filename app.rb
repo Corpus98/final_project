@@ -96,14 +96,14 @@ get "/items" do
 	@items = Item.all
 	erb:item_page_all
 end
-# display individual items by id
-get "/item/:id" do
-
-	@item1 = Item.get(params[:id])
-	erb :item_page_single
-	# @item = Item.select{ |thing| thing.id.include? params[:id].to_i}
-	# erb:item_page_single
-end
+# # display individual items by id
+# get "/item/:id" do
+#
+# 	@item1 = Item.get(params[:id])
+# 	erb :item_page_single
+# 	# @item = Item.select{ |thing| thing.id.include? params[:id].to_i}
+# 	# erb:item_page_single
+# end
 
 # delete item
 delete '/items/:id' do
@@ -115,7 +115,7 @@ end
 
 # Item CRUD
 
-get "/item/create" do
+get "/item/create_test" do
 	erb:item_create
 end
 
@@ -137,7 +137,7 @@ end
 
 # update Item
 get "/item/:id/update" do
-
+	@item2 = Item.get(params[:id])
 	erb:item_update
 end
 
@@ -151,9 +151,24 @@ end
 
 post '/items/:id/update' do
 
-  @item = Item.get(params[:id])
-	@item.name = params[:name]
-	@item.description = params[:description]
-	@item.save
+  @item_update = Item.get(params[:id])
+	@item_update.name = params[:name]
+	@item_update.description = params[:description]
+	@item_update.save
 	redirect "/items"
+end
+
+
+
+
+
+
+
+# display individual items by id
+get "/item/:id" do
+
+	@item1 = Item.get(params[:id])
+	erb :item_page_single
+	# @item = Item.select{ |thing| thing.id.include? params[:id].to_i}
+	# erb:item_page_single
 end
