@@ -204,11 +204,6 @@ post '/post/:id' do
 	redirect back
 end
 
-# # delete item
-# delete '/items/:id' do
-#
-#   Item.get(params[:id]).destroy
-# end
 
 # //////////////////////////////////////////////
 
