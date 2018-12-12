@@ -2,16 +2,11 @@
 	<h1>Dashboard for <%= current_user.email %></h1>
 	<h1>Dashboard for <%= current_user.first_name %></h1>
 	<h1>Dashboard for <%= current_user.last_name %></h1>
-		<h1>user id: <%= current_user.id %></h1>
-
-	<p>Blah blah blah signed in stuff.</p>
-
+	<h1>user id: <%= current_user.id %></h1>
 
 	<td><a href="/profile/update/<%= current_user.id %>" class="btn btn-warning">Update Profile</a></td>
-	<td><a href="/item/create" class="btn btn-warning">Add Item</a></td>
+	<td><a href="/post/create" class="btn btn-warning">Add Item</a></td>
 	<td><a href="/items" class="btn btn-warning">All Items</a></td>
 	<td><a href="/items" class="btn btn-warning">My Items</a></td>
-
-
 
 </div>

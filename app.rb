@@ -68,11 +68,11 @@ end
 
 
 ################################################### Membership/ Payment
-get "/all_posts" do
-	!authenticate
-	@items = Item.all
-	erb :"posts/all_posts"
-end
+# get "/all_posts" do
+# 	!authenticate
+# 	@items = Item.all
+# 	erb :"posts/all_posts"
+# end
 
 get "/become_pro" do
 	#authenticate!
@@ -139,37 +139,15 @@ end
 post "/search" do
 
 	@items = Item.select{ |thing| thing.name.include? params[:search].to_s }
-	erb :search_results
-	# erb :"search/search_results"
+	erb :"search/search_results"
 end
-
-# # search
-# post "/search" do
-# 	#authenticate!
-# 	@query = Item.find(:name.like => "%#{params[:search]}%")
-#
-# 	erb :search_results
-# end
-
-# get "/search" do
-#
-# 	# searchResult = params[:search]
-# 	@items = Item.get(:name.like => "%#{params[:search]}%")
-#
-# 	erb :search_results
-# end
-
-
-
-
 
 
 # display all items
 get "/items" do
 
 	@items = Item.all
-	erb:item_page_all
-	# erb :"posts/all_posts"
+	erb :"posts/post_page_all"
 end
 
 
@@ -178,13 +156,13 @@ end
 
 ################################################### Creation, Deletion, Update
 # If Reloaded Redirect to the Create page
-get "/item/create" do
+get "/post/create" do
 	# erb:item_create
-	erb :"posts/item_create"
+	erb :"posts/post_create"
 end
 
 # Create Item
-post "/item/create" do
+post "/post/create" do
 
     i = Item.new
     i.name = params[:name]
@@ -203,13 +181,12 @@ end
 # //////////////////////////////////////////////
 
 # If Reloaded Redirect to the Update page
-get "/item/update/:id" do
+get "/post/update/:id" do
 	@update = Item.get(params[:id])
-	erb:item_update
-	# erb :"posts/item_update"
+	erb :"posts/post_update"
 end
 
-post '/item/update/:id' do
+post '/post/update/:id' do
 
   @update = Item.get(params[:id])
 	@update.name = params[:name]
@@ -221,7 +198,7 @@ end
 # //////////////////////////////////////////////
 
 # delete individual items by id
-post '/item/:id' do
+post '/post/:id' do
 
   Item.get(params[:id]).destroy
 	redirect back
@@ -239,11 +216,8 @@ end
 get "/item/:id" do
 
 	@item1 = Item.get(params[:id])
-	erb :item_page_single
-	# erb :"posts/all_posts"
+	erb :"posts/post_page_single"
 
-	# @item = Item.select{ |thing| thing.id.include? params[:id].to_i}
-	# erb:item_page_single
 end
 
 # //////////////////////////////////////////////

@@ -7,10 +7,10 @@
             <td><%=i.description%></td>
             <td><%=i.cost_Day%></td>
             <td><%=i.cost_Week%></td>
-            <td><a href="/item/update/<%= i.id %>" class="btn btn-warning">Update Item</a></td>
+            <td><a href="/post/update/<%= i.id %>" class="btn btn-warning">Update Item</a></td>
 
             <td>
-            <form class="" action="/item/<%=i.id %>" method="POST">
+            <form class="" action="/post/<%=i.id %>" method="POST">
              <button type="submit" name="button" class="btn btn-danger">Delete</button>
            </form>
          </td>
