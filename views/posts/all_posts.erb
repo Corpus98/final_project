@@ -1,0 +1,16 @@
+<% if @items.nil? %>
+    <table>
+        <%@items.each do |i|%>
+        <tr valign="top">
+            <td><%=i.id%></td>
+            <td><%=i.name%></td>
+            <td><%=i.description%></td>
+            <td><%=i.cost_Day%></td>
+            <td><%=i.cost_week%></td>
+        </tr>
+        <%end%>
+    </table>
+
+<%else %>
+    <strong>You a Foo</strong>
+<% end %>

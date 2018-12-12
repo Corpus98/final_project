@@ -1,7 +1,30 @@
 require "sinatra"
 require 'sinatra/flash'
 require_relative "authentication.rb"
-# require 'stripe'
+
+
+# items #
+class Item
+	include DataMapper::Resource
+
+	property :id, Serial
+	property :posters_ID, Integer
+	property :renters_ID, Integer
+  	property :name, String
+  	property :description, String
+  	property :cost_Day, Integer
+  	property :cost_Week, Integer
+  	property :available, Boolean
+
+
+ 	def rent_out
+    	# make it unavailable
+    	Item.available = false
+
+    	# 
+  	end
+end
+Item.auto_upgrade!
 
 #the following urls are included in authentication.rb
 # GET /login
@@ -16,64 +39,129 @@ get "/" do
 	erb :index
 end
 
-
 get "/dashboard" do
-	authenticate!
+	# authenticate!
 	erb :dashboard
 end
 
-
-get "/upgrade" do
-	authenticate!
-
-	if current_user.pro? || current_user.administrator?
-		flash[:error] = "Error: You are not eligible to upgrade."
-		redirect "/"
-	end
-
-	erb :pay
+# authentication views
+get "/login" do
+	erb :login
 end
 
-post "/charge" do
+get "invalid_login" do
+	erb :invalid_login
+end
 
-  begin
-	  # Amount in cents
-	  @amount = params[price]
-	  @charge_am = @amount * 1.05
+get "/sign_up" do
+	erb :signup
+end
 
-	  customer = Stripe::Customer.create(
-	    :email => 'customer@example.com',
-	    :source  => params[:stripeToken]
-	  )
+get "successful_signup" do
+	erb :successful_signup
+end
 
-	  charge = Stripe::Charge.create(
-	    :amount      => @charge_am,
-	    :description => 'Sinatra Charge',
-	    :currency    => 'usd',
-	    :customer    => customer.id
-	  )
-	  
-	  @charge_me = @amount * 0.10
-	  payout = Stripe::payout.create (
-	  	:amount 	 =>@charge_me,
-	  	:description =>'sinatra',
-	  	:currency	 => #OUR CARD ID
-	  )
+################################################### Membership/ Payment
+get "/all_posts" do 
+	!authenticate
+	@items = Item.all
+	erb :"posts/all_posts"
+end
 
-	  @charge_um = @amount * 0.95
-	  payout = Stripe::payout.create (
-	  	:amount 	 =>@charge_um,
-	  	:description =>'sinatra',
-	  	:currency	 => #USER CARD ID
-	  )
-
-
-
-
-	  flash[:success] = "Success: You have upgraded to PRO."
-	  redirect "/"
-	rescue Stripe::CardError
-	  flash[:error] = "Error: Please try a new card."
-	  redirect "/"
+get "/become_pro" do 
+	authenticate!
+	if 
+		erb :"payment/become_pro"
+	else
+		redirect "/"
 	end
+end
+
+################################################### Search BAR
+# If Reloaded Return All possible Results
+get "/search" do
+	@items = Item.all
+	erb :"search/search_results"
+end
+
+# Search Bar Item
+post "/search" do
+	@items = Item.select{ |thing| thing.name.include? params[:search].to_s }
+
+	erb :"search/search_results"
+end
+
+# display all items
+get "/items" do
+
+	@items = Item.all
+	erb :"posts/all_posts"
+end
+
+# display individual items by id
+get "/items/:id" do
+
+	@items = Item.find(params[:id])
+	erb :"posts/all_posts"
+	# @item = Item.get(params[:id])
+	# erb:item_page_single
+end
+
+
+################################################### Creation, Deleation, Update 
+# If Reloaded Redirect to the Create page
+get "/item/create" do
+	erb :"posts/post_create"
+	
+end
+
+# Create Item
+post "/item/create" do
+	### has_attached_file :image, style
+    @item = Item.new
+	@item.name = params[:title]
+	@item.description = params[:descripiton]
+	@item.cost_Day = params[:cost_per_day]
+	@item.cost_Week = params[:cost_per_week]
+
+	@item.posters_ID = current_user
+	@item.renters_ID = nil
+	@item.available = false
+
+	@item.save
+
+	# redirect "/items/:id"
+	redirect "/dashboard"
+end
+
+
+# If Reloaded Redirect to the Update page
+get "/items/:id/update" do
+	erb :"posts/item_update"
+end
+
+# Update item
+post '/items/:id/update' do
+
+    @item = Item.get(params[:id])
+	@item.name = params[:name]
+	@item.description = params[:description]
+	@item.cost_Day = params[:cost_per_day]
+	@item.cost_Week = params[:cost_per_week]
+
+	@item.available = true
+	@item.save
+
+	redirect "/items"
+end
+
+# Delete item
+delete '/items/:id' do
+ # if Item.get(params[:id].nil?
+    Item.get(params[:id]).destroy
+    # redirect "/"
+ 	# Flash Success
+ # else
+    # redirect "/"
+ 	# Flash Failure
 end
