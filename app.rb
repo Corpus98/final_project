@@ -8,6 +8,7 @@ class Item
 	include DataMapper::Resource
 
 	property :id, Serial
+    property :created_at, DateTime
 	property :posters_ID, Integer
 	property :renters_ID, Integer
   	property :name, String
@@ -40,7 +41,11 @@ get "/" do
 end
 
 get "/dashboard" do
-	# authenticate!
+	authenticate!
+	# Shwo all option to edit your information
+
+	# show my rented out item if any and my options with that item
+
 	erb :dashboard
 end
 
@@ -93,7 +98,6 @@ end
 
 # display all items
 get "/items" do
-
 	@items = Item.all
 	erb :"posts/all_posts"
 end
@@ -103,16 +107,19 @@ get "/items/:id" do
 
 	@items = Item.find(params[:id])
 	erb :"posts/all_posts"
-	# @item = Item.get(params[:id])
-	# erb:item_page_single
 end
 
+################################################### Renting out stuff
 
 ################################################### Creation, Deleation, Update 
 # If Reloaded Redirect to the Create page
 get "/item/create" do
-	erb :"posts/post_create"
-	
+	if current_user.rented_out = nil
+		erb :"posts/post_create"
+	else
+		redirect "/"
+	end
+
 end
 
 # Create Item
@@ -124,11 +131,14 @@ post "/item/create" do
 	@item.cost_Day = params[:cost_per_day]
 	@item.cost_Week = params[:cost_per_week]
 
+	@cur_user = User.find { |e| e.ID = current_user  }
 	@item.posters_ID = current_user
 	@item.renters_ID = nil
 	@item.available = false
 
 	@item.save
+
+	@cur_user.rented_out = @item.id
 
 	# redirect "/items/:id"
 	redirect "/dashboard"

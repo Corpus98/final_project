@@ -16,6 +16,8 @@ class User
     property :password, String
     property :created_at, DateTime
 
+    property :rented_out, Integer
+
     def login(password)
     	return self.password == password
     end
