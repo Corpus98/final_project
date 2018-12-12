@@ -67,10 +67,10 @@ end
 ################################################### Creation, Deletion, Update
 # //////////// POST CREATE
 # DISPLAYS ALL ITEMSS
-get "/posts" do
-	@item = Item.all
+get "/items" do
+	@items = Item.all
 	erb :"posts/posts"
-end1
+end
 
 # If Reloaded Redirect to the Create page
 get "/item/create" do
@@ -80,19 +80,19 @@ end
 # Create Item
 post "/item/create" do
 	### has_attached_file :image, style
-    @item = Item.new
-	@item.name = params[:title]
-	@item.description = params[:descripiton]
-	@item.cost_Day = params[:cost_per_day]
-	@item.cost_Week = params[:cost_per_week]
+    i = Item.new
+	i.name = params[:name]
+	i.description = params[:descripiton]
+	i.cost_Day = params[:cost_per_day]
+	i.cost_Week = params[:cost_per_week]
 
-	@item.posters_ID = current_user
-	@item.renters_ID = nil
-	@item.available = true
+	i.posters_ID = current_user
+	i.renters_ID = nil
+	i.available = true
 
-	@item.save
+	i.save
 	@cur_user = User.find { current_user }
-	@cur_user.rented_out = @item.id
+	@cur_user.rented_out = i.id
 
 	redirect "/dashboard"
 end
