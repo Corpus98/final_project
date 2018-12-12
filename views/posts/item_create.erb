@@ -1,5 +1,7 @@
-<form action="/item/create" method="POST" enctype="multipart/form-data">
-	Name: <input type="text" name="name" required><br/>
-	Description: <input type="text" name="description" required><br/>
-	<button type="submit">Create Item</button>
+<form method="post" action="/item/create" enctype="multipart/form-data">
+  <input class="form-control" type="text" placeholder="name" name="name" required />
+  <textarea class="form-control" rows="10" cols="60" placeholder="description" name="description" required></textarea>
+	<input class="form-control" type="number" placeholder="cost per day" name="cost_per_day" step="0.01" required />
+	<input class="form-control" type="number" placeholder="cost per week" name="cost_per_week" step="0.01" required />
+  <button class="form-control" type="submit">Create Item</button>
 </form>

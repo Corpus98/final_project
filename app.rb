@@ -179,8 +179,8 @@ end
 ################################################### Creation, Deletion, Update
 # If Reloaded Redirect to the Create page
 get "/item/create" do
-	erb:item_create
-	# erb :"posts/post_create"
+	# erb:item_create
+	erb :"posts/item_create"
 end
 
 # Create Item
