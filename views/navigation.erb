@@ -8,39 +8,39 @@
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-      
-      <% if current_user %>
-        <li class="nav-item"><!-- 
-          <a class="nav-link" href="/Search">Search by Location</a> -->
-        
-        <li class="nav-item">
-          <a class="nav-link" href="/dashboard">My Account</a>
-        </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="/item/create">Make a Post</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
-        <!-- need to make this only appear to non pro and non admin users--> 
-        <li class="nav-item">
-          <a class="nav-link" href="/become_pro">Become a Pro User</a>
-        </li>
-        
-      <% else %>
+      <% if current_user == nil %>
         <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/sign_up">Sign Up</a>
         </li>
-      <% end %>
 
+      <% elsif current_user.pro == true %>
         <li class="nav-item">
-          <a class="nav-link" href="/items">Posts</a>
+          <a class="nav-link" href="/dashboard">My Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+
+      <% elsif current_user.pro == false %>
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">My Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/become_pro">Become a Pro User</a>
+        </li>
+
+      <% end %>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
         </li> 
+
 
     </ul>
     <form class="form-inline my-2 my-lg-0" method="post" action="/search">

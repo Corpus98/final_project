@@ -27,6 +27,13 @@ a {
   height: 440px;
 }
 
+.tron1 {
+  background-image: url('/images/camera.png');
+  position: left;
+  height: 440px;
+  width:440px;
+}
+
 footer {
   background-color: #7F3723;
   position: absolute;

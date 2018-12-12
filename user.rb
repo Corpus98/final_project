@@ -13,13 +13,20 @@ class User
     include DataMapper::Resource
     property :id, Serial
     property :email, String
-    property :password, String
     property :created_at, DateTime
 
+    # updateable
+    property :password, String
+    property :first_name, String
+    property :last_name, String
+    property :username, String
+    property :phone, String
+
     property :rented_out, Integer
+    property :pro, Boolean, :default => false
 
     def login(password)
-    	return self.password == password
+        return self.password == password
     end
 end
 

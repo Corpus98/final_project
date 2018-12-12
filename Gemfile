@@ -5,8 +5,6 @@ gem 'sinatra-flash'
 group :development do
   gem "sqlite3-ruby"
   gem "dm-sqlite-adapter"
-  gem "paperclip"
-  gem "image_magick"
 end
 
 group :production do

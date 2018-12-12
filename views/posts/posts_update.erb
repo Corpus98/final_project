@@ -1,0 +1,11 @@
+<h1>edit page</h1>
+
+
+<form action="/item/update/<%=@update.id%>" method="POST" enctype="multipart/form-data">
+	Name: <input type="text" name="name" placeholder="<%=@update.name%>" required><br/>
+	Description: <input type="text" name="description" placeholder="<%=@update.description%>" required><br/>
+	<button type="submit">Update Item</button>
+</form>
+
+
+<p><%=@update.name%></p>

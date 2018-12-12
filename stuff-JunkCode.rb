@@ -1,4 +1,3 @@
-
 get "/upgrade" do
 	authenticate!
 
@@ -28,7 +27,7 @@ post "/charge" do
 	    :currency    => 'usd',
 	    :customer    => customer.id
 	  )
-	  
+
 	  @charge_me = @amount * 0.10
 	  payout = Stripe::payout.create (
 	  	:amount 	 => @charge_me,
@@ -56,22 +55,10 @@ end
 
 
 
-
-
-
-
-
-
-
 #get "/upgrade" do
-#	authenticate!
-#
-#	if current_user.pro? || current_user.administrator?
-#		flash[:error] = "Error: You are not eligible to upgrade."
-#		redirect "/"
-#	end
-#
-#	erb :pay
+	#authenticate!
+
+	#erb :"payment/pay"
 #end
 
 #post "/charge" do
@@ -92,7 +79,7 @@ end
 #	    :currency    => 'usd',
 #	    :customer    => customer.id
 #	  )
-	  
+
 #	  @charge_me = @amount * 0.10
 #	  payout = Stripe::payout.create (
 #	  	:amount 	 => @charge_me,
@@ -115,35 +102,27 @@ end
 #	end
 #end
 
+################################################### Search BAR
+# If Reloaded Return All possible Results
+# get "/search" do
+# 	@items = Item.all
+# 	erb :"search/search_results"
+# end
 
 
 
+# # search
+# post "/search" do
+# 	#authenticate!
+# 	@query = Item.find(:name.like => "%#{params[:search]}%")
+#
+# 	erb :search_results
+# end
 
-
-
-
-
-
-
-
-	### has_attached_file :image, #style {large: "600x600>", medium: "300x300>", thumb: "150x150>"}
-	### validates_attachment_content_type :image, content_type: /\Aimage\/.*\z/
-	# property :location, String
-    # property :image, String
-    # property :owner, Class, User
-	# property :available, Boolean,  :default => true
-
- 	### def up
-    	### add_attachment :Item, :image
-  	### end
-
-  	### def down
-    	### remove_attachment :Item, :image
-  	### end
-
-  	
-    ### @filename = params[:file][:filename]
- 	### file = params[:file][:tempfile]
-	### i.location = params[:location]
-	### i.image = params[:image]
-	### i.created_at = Time.now
+# get "/search" do
+#
+# 	# searchResult = params[:search]
+# 	@items = Item.get(:name.like => "%#{params[:search]}%")
+#
+# 	erb :search_results
+# end

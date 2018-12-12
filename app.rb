@@ -8,23 +8,23 @@ class Item
 	include DataMapper::Resource
 
 	property :id, Serial
-    property :created_at, DateTime
+ 	property :name, String
+  	property :description, String
+
 	property :posters_ID, Integer
 	property :renters_ID, Integer
-  	property :name, String
-  	property :description, String
-  	property :cost_Day, Integer
-  	property :cost_Week, Integer
-  	property :available, Boolean
+	property :renters_ID, Integer
 
+	property :cost_Day, Integer
+	property :cost_Week, Integer
+	property :available, Boolean,  :default => true
 
  	def rent_out
     	# make it unavailable
     	Item.available = false
-
-    	# 
   	end
 end
+
 Item.auto_upgrade!
 
 #the following urls are included in authentication.rb
@@ -43,9 +43,7 @@ end
 get "/dashboard" do
 	authenticate!
 	# Shwo all option to edit your information
-
-	# show my rented out item if any and my options with that item
-
+	# Show my rented out item if any and my options with that item
 	erb :dashboard
 end
 
@@ -66,60 +64,17 @@ get "successful_signup" do
 	erb :successful_signup
 end
 
-################################################### Membership/ Payment
-get "/all_posts" do 
-	!authenticate
-	@items = Item.all
-	erb :"posts/all_posts"
-end
+################################################### Creation, Deletion, Update
+# //////////// POST CREATE
+# DISPLAYS ALL ITEMSS
+get "/posts" do
+	@item = Item.all
+	erb :"posts/posts"
+end1
 
-get "/become_pro" do 
-	authenticate!
-	if 
-		erb :"payment/become_pro"
-	else
-		redirect "/"
-	end
-end
-
-################################################### Search BAR
-# If Reloaded Return All possible Results
-get "/search" do
-	@items = Item.all
-	erb :"search/search_results"
-end
-
-# Search Bar Item
-post "/search" do
-	@items = Item.select{ |thing| thing.name.include? params[:search].to_s }
-
-	erb :"search/search_results"
-end
-
-# display all items
-get "/items" do
-	@items = Item.all
-	erb :"posts/all_posts"
-end
-
-# display individual items by id
-get "/items/:id" do
-
-	@items = Item.find(params[:id])
-	erb :"posts/all_posts"
-end
-
-################################################### Renting out stuff
-
-################################################### Creation, Deleation, Update 
 # If Reloaded Redirect to the Create page
 get "/item/create" do
-	if current_user.rented_out = nil
-		erb :"posts/post_create"
-	else
-		redirect "/"
-	end
-
+	erb :"posts/posts_create"
 end
 
 # Create Item
@@ -131,47 +86,77 @@ post "/item/create" do
 	@item.cost_Day = params[:cost_per_day]
 	@item.cost_Week = params[:cost_per_week]
 
-	@cur_user = User.find { |e| e.ID = current_user  }
 	@item.posters_ID = current_user
 	@item.renters_ID = nil
-	@item.available = false
+	@item.available = true
 
 	@item.save
-
+	@cur_user = User.find { current_user }
 	@cur_user.rented_out = @item.id
 
-	# redirect "/items/:id"
 	redirect "/dashboard"
 end
 
+# display individual items by id
+# get "/item/:id" do
+# 	@item = Item.get(params[:id])
+# 	erb :"posts/posts"
+# end
 
+# //////////// POST UPDATE
 # If Reloaded Redirect to the Update page
-get "/items/:id/update" do
-	erb :"posts/item_update"
+get "/item/update/:id" do
+	@update = Item.get(params[:id])
+	erb :"posts/posts_update"
 end
 
-# Update item
-post '/items/:id/update' do
-
-    @item = Item.get(params[:id])
-	@item.name = params[:name]
-	@item.description = params[:description]
-	@item.cost_Day = params[:cost_per_day]
-	@item.cost_Week = params[:cost_per_week]
-
-	@item.available = true
-	@item.save
-
+# Update the thing
+post "/item/update/:id" do
+    @update = Item.get(params[:id])
+	@update.name = params[:name]
+	@update.description = params[:description]
+	@update.save
 	redirect "/items"
 end
 
-# Delete item
-delete '/items/:id' do
- # if Item.get(params[:id].nil?
-    Item.get(params[:id]).destroy
-    # redirect "/"
- 	# Flash Success
- # else
-    # redirect "/"
- 	# Flash Failure
+# //////////// POST DELETION
+# delete individual items by id
+post '/remove/:id' do
+ 	Item.get(params[:id]).destroy
+	redirect back
+end
+
+# ////////////////////////////////////////////// PROFILE UPDATE
+# If Reloaded Redirect to the User Update Page
+get "/profile/update/:id" do
+
+	@profile = current_user
+	erb :"user/profile_update"
+end
+
+post "/profile/update/:id" do
+
+  @profile = current_user
+	@profile.first_name = params[:first_name]
+	@profile.last_name = params[:last_name]
+	@profile.save
+	redirect "/dashboard"
+end
+
+# //////////////////////////////////////////////
+get "/become_pro" do
+	erb :"payment/become_pro"
+end
+
+post "/become_pro" do
+	current_user.pro = true
+	current_user.save
+	redirect "/"
+end
+
+################################################### POSTS && VIEWS
+# Search Bar Item
+post "/search" do
+	@item = Item.select{ |thing| thing.name.include? params[:search].to_s }
+	erb :"posts/posts"
 end

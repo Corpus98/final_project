@@ -1,0 +1,8 @@
+<h1>Profile Update</h1>
+
+
+<form action="/profile/update/<%=current_user.id%>" method="POST" enctype="multipart/form-data">
+	Name: <input type="text" name="name" placeholder="<%=current_user.first_name%>" required><br/>
+	Description: <input type="text" name="description" placeholder="<%=current_user.last_name%>" required><br/>
+	<button type="submit">Update Profile</button>
+</form>
