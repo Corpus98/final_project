@@ -53,20 +53,81 @@ get "successful_signup" do
 	erb :successful_signup
 end
 
-get "/upgradepro" do
-	#!authenticate
-	if
-		erb :upgradepro
-	else
-		redirect "/"
-	end
+
+################################################### Membership/ Payment
+get "/all_posts" do
+	!authenticate
+	@items = Item.all
+	erb :"posts/all_posts"
 end
 
-post "/search" do
-	@items = Item.select{ |thing| thing.name.include? params[:search].to_s }
-	#@items = Item.all { |thing| thing.name.include? params[:search].to_s }
+get "/become_pro" do
+	#authenticate!
+		erb :"payment/become_pro"
 
+end
+
+#get "/upgrade" do
+	#authenticate!
+
+	#erb :"payment/pay"
+#end
+
+#post "/charge" do
+#
+#  begin
+#	  # Amount in cents
+#	  @amount = params[price]
+#	  @charge_am = @amount * 1.05
+#
+#	  customer = Stripe::Customer.create(
+#	    :email => 'customer@example.com',
+#	    :source  => params[:stripeToken]
+#	  )
+
+#	  charge = Stripe::Charge.create(
+#	    :amount      => @charge_am,
+#	    :description => 'Sinatra Charge',
+#	    :currency    => 'usd',
+#	    :customer    => customer.id
+#	  )
+
+#	  @charge_me = @amount * 0.10
+#	  payout = Stripe::payout.create (
+#	  	:amount 	 => @charge_me,
+#	  	:description => 'sinatra',
+#	  	:currency	 => #OUR CARD ID
+#	  )
+
+#	  @charge_um = @amount * 0.95
+#	  payout = Stripe::payout.create (
+#	  	:amount 	 => @charge_um,
+#	  	:description => 'sinatra',
+#	  	:currency	 => #USER CARD ID
+#	  )
+
+#	  flash[:success] = "Success: You have upgraded to PRO."
+#	  redirect "/"
+#	rescue Stripe::CardError
+#	  flash[:error] = "Error: Please try a new card."
+#	  redirect "/"
+#	end
+#end
+
+################################################### Search BAR
+# If Reloaded Return All possible Results
+# get "/search" do
+# 	@items = Item.all
+# 	erb :"search/search_results"
+# end
+
+
+# Search Bar Item
+post "/search" do
+
+	@items = Item.select{ |thing| thing.name.include? params[:search].to_s }
 	erb :search_results
+	# erb :"search/search_results"
 end
 
 # # search
@@ -95,24 +156,21 @@ get "/items" do
 
 	@items = Item.all
 	erb:item_page_all
+	# erb :"posts/all_posts"
 end
 
 
-# # delete item
-# delete '/items/:id' do
-#
-#   Item.get(params[:id]).destroy
-# end
 
 
 
-# Item CRUD
-
-get "/item/create_test" do
+################################################### Creation, Deletion, Update
+# If Reloaded Redirect to the Create page
+get "/item/create" do
 	erb:item_create
+	# erb :"posts/post_create"
 end
 
-# create Item
+# Create Item
 post "/item/create" do
 
     i = Item.new
@@ -128,19 +186,12 @@ end
 
 # //////////////////////////////////////////////
 
-# update Item
+# If Reloaded Redirect to the Update page
 get "/item/:id/update" do
 	@item2 = Item.get(params[:id])
 	erb:item_update
+	# erb :"posts/item_update"
 end
-
-# update Profile
-get "profile/:id/update" do
-	"hello world"
-	# erb:profile_update
-end
-
-
 
 post '/items/:id/update' do
 
@@ -151,24 +202,40 @@ post '/items/:id/update' do
 	redirect "/items"
 end
 
+# //////////////////////////////////////////////
 
+# delete individual items by id
+post '/item/:id' do
 
+  Item.get(params[:id]).destroy
+	redirect back
+end
 
+# # delete item
+# delete '/items/:id' do
+#
+#   Item.get(params[:id]).destroy
+# end
 
-
+# //////////////////////////////////////////////
 
 # display individual items by id
 get "/item/:id" do
 
 	@item1 = Item.get(params[:id])
 	erb :item_page_single
+	# erb :"posts/all_posts"
+
 	# @item = Item.select{ |thing| thing.id.include? params[:id].to_i}
 	# erb:item_page_single
 end
 
-# delete item
-post '/item/:id' do
+# //////////////////////////////////////////////
 
-  Item.get(params[:id]).destroy
-	redirect back
+
+################################################### Updating User Profile
+# If Reloaded Redirect to the User Update Page
+get "profile/:id/update" do
+	"hello world"
+	# erb:profile_update
 end

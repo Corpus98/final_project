@@ -21,6 +21,9 @@ class User
     property :username, String
     property :phone, String
 
+    property :pro, Boolean, :default => false
+    property :free, Boolean, :default => true
+
     def login(password)
     	return self.password == password
     end
