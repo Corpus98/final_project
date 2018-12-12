@@ -187,13 +187,13 @@ end
 # //////////////////////////////////////////////
 
 # If Reloaded Redirect to the Update page
-get "/item/:id/update" do
-	@item2 = Item.get(params[:id])
+get "/item/update/:id" do
+	@update = Item.get(params[:id])
 	erb:item_update
 	# erb :"posts/item_update"
 end
 
-post '/items/:id/update' do
+post '/item/update/:id' do
 
   @update = Item.get(params[:id])
 	@update.name = params[:name]
@@ -235,7 +235,6 @@ end
 
 ################################################### Updating User Profile
 # If Reloaded Redirect to the User Update Page
-get "profile/:id/update" do
-	"hello world"
-	# erb:profile_update
+get "profile/update/:id" do
+	erb:profile_update
 end

@@ -5,7 +5,7 @@
             <td><a href="/item/<%= i.id %>" class="btn btn-warning"><%= i.id %></a></td>
             <td><%=i.name%></td>
             <td><%=i.description%></td>
-            <td><a href="/item/<%= i.id %>/update" class="btn btn-warning">Update Item</a></td>
+            <td><a href="/item/update/<%= i.id %>" class="btn btn-warning">Update Item</a></td>
 
             <td>
             <form class="" action="/item/<%=i.id %>" method="POST">
