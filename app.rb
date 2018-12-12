@@ -10,10 +10,23 @@ class Item
 	property :id, Serial
   property :name, String
   property :description, String
+
+	property :posters_ID, Integer
+	property :renters_ID, Integer
+	property :cost_Day, Integer
+	property :cost_Week, Integer
+	property :available, Boolean,  :default => true
+
 	# property :location, String
   # property :image, String
   # property :owner, Class, User
-	# property :available, Boolean,  :default => true
+
+ 	def rent_out
+    	# make it unavailable
+    	Item.available = false
+
+    	#
+  	end
 end
 
 Item.auto_upgrade!
@@ -176,9 +189,12 @@ post "/item/create" do
     i = Item.new
     i.name = params[:name]
     i.description = params[:description]
-		# i.location = params[:location]
-		# i.image = params[:image]
-		# i.created_at = Time.now
+		i.cost_Day = params[:cost_per_day]
+		i.cost_Week = params[:cost_per_week]
+		# i.posters_ID = current_user
+		# i.renters_ID = nil
+		# i.available = false
+
     i.save
 		redirect "/items"
 		# redirect back
@@ -235,6 +251,18 @@ end
 
 ################################################### Updating User Profile
 # If Reloaded Redirect to the User Update Page
-get "profile/update/:id" do
+get "/profile/update/:id" do
+
+	@profile = current_user
 	erb:profile_update
+end
+
+post '/profile/update/:id' do
+
+  @profile = current_user
+	@profile.first_name = params[:first_name]
+	@profile.last_name = params[:last_name]
+	@profile.save
+	redirect "/dashboard"
+	# redirect back
 end
