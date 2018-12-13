@@ -15,10 +15,11 @@
                     <td><form class="" action="/remove/<%=i.id %>" method="POST">
                         <button type="submit" name="button" class="btn btn-danger">Delete</button>
                     </form></td>
+
                 <% else %>
 
                     <td><form class="" action="/rent_out/<%=i.id %>" method="POST">
-                        <button type="submit" name="button" class="btn btn-danger">Delete</button>
+                        <button type="submit" name="button" class="btn btn-info">Rent It</button>
                     </form></td>
 
                 <% end %>
