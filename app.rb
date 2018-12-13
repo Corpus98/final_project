@@ -1,36 +1,9 @@
 require "sinatra"
 require 'sinatra/flash'
 require_relative "authentication.rb"
-
-
-# items #
-class Item
-	include DataMapper::Resource
-
-	property :id, Serial
- 	property :name, String
-  	property :description, String
-
-	property :posters_ID, Integer
-	property :renters_ID, Integer
-	property :renters_ID, Integer
-
-	property :cost_Day, Integer
-	property :cost_Week, Integer
-	property :available, Boolean,  :default => true
-
- 	def rent_out
-    	# make it unavailable
-    	Item.available = false
-  	end
-end
-Item.auto_upgrade!
-
-
-#the following urls are included in authentication.rb
-# GET /login
-# GET /logout
-# GET /sign_up
+# require_relative "item.rb"
+# require_relative "transaction.rb"
+# require_relative "messeges.rb"
 
 # authenticate! will make sure that the user is signed in, if they are not they will be redirected to the login page
 # if the user is signed in, current_user will refer to the signed in user object.
@@ -83,12 +56,6 @@ post "/item/create" do
 
 	redirect "/dashboard"
 end
-
-# display individual items by id
-# get "/item/:id" do
-# 	@item = Item.get(params[:id])
-# 	erb :"posts/posts"
-# end
 
 # //////////// POST UPDATE
 # If Reloaded Redirect to the Update page
@@ -192,7 +159,7 @@ post "/rent_confirm/:id" do
 		@M.save
 
 		redirect "/dashboard"
-		
+
 	elsif @t.renter_confirmation == 1 && current_user.id  == @t.renters_ID # The renter is confirming his possetion of the item	
 		@t.rent_out 
 
@@ -238,5 +205,14 @@ post "/rent_confirm/:id" do
 		@M.save
 
 		redirect "/dashboard"
+	
+	else
+
+		redirect "/"	
 	end
+end
+
+get "/mess&alerts" do
+	@messeges = Messege.select{ |mess| mess.to_ID == current_user.id }
+	erb :"messeges/messeges"
 end
