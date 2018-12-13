@@ -7,8 +7,7 @@
 	<button type="submit">Create Item</button>
 </form> -->
 
-
-<form method="post" action="/item/create" enctype="multipart/form-data">
+<form action="/item/create" method="POST"  enctype="multipart/form-data">
 	<input class="form-control" type="text" placeholder="name" name="name" required />
   	
   	<textarea class="form-control" rows="10" cols="60" placeholder="description" name="description" required></textarea>
@@ -19,6 +18,7 @@
   
   <button class="form-control" type="submit">Create Item</button>
 </form>
+
 
  <!-- 
 <form action="/item/create" method="POST" enctype="multipart/form-data">

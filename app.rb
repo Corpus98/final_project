@@ -13,7 +13,7 @@ class Item
 
 	property :posters_ID, Integer
 	property :renters_ID, Integer
-	property :renters_ID, Integer
+	#property :renters_ID, Integer
 
 	property :cost_Day, Integer
 	property :cost_Week, Integer
@@ -23,6 +23,8 @@ class Item
     	# make it unavailable
     	Item.available = false
   	end
+
+
 end
 
 Item.auto_upgrade!
@@ -69,6 +71,7 @@ end
 # DISPLAYS ALL ITEMSS
 get "/items" do
 	@items = Item.all
+
 	erb :"posts/posts"
 end
 
@@ -80,15 +83,16 @@ end
 # Create Item
 post "/item/create" do
 	### has_attached_file :image, style
+
     i = Item.new
-	i.name = params[:name]
-	i.description = params[:descripiton]
+	i.name = params [:name]
+	i.description = params[:description]
 	i.cost_Day = params[:cost_per_day]
 	i.cost_Week = params[:cost_per_week]
 
 	i.posters_ID = current_user
 	i.renters_ID = nil
-	i.available = true
+	
 
 	i.save
 	@cur_user = User.find { current_user }
