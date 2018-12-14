@@ -122,7 +122,8 @@ end
 ################################################### POSTS && VIEWS
 # Search Bar Item
 post "/search" do
-	@item = Item.select{ |thing| thing.name.include? params[:search].to_s }
+	# @item = Item.select { |thing| thing.name.include? params[:search].to_s }
+	@item = Item.all? { |e| e.name.include? params[:search] }
 	erb :"posts/posts"
 end
 
