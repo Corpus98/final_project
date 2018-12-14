@@ -128,8 +128,7 @@ end
 
 post "/rent_out/:id" do
 	authenticate!
-	@t = Transaction.first { |e| e.item_id == params[:id] }
-	if @t.nil?
+	if Transaction.find { |e| e.item_id == params[:id] } == false # NOT WORKING 
 		@t = Transaction.new
 		@t.renters_id = current_user
 		@t.item_id = params[:id]
@@ -156,10 +155,10 @@ end
 
 post "/rent_confirm/:id" do
 	authenticate!
-	@t = Transaction.first{ |e| e.item_id == params[:id] }
+	@t = Transaction.select{ |e| e.item_id == params[:id] }
 
-	if @t
-		if current_user == @t.owner_id
+	if Transaction.find { |e| e.item_id == params[:id] } == nil # NOT WORKING
+		if @t.owner_id == current_user
 			if @t.owner_confirmation == 0 #the owner is agreeing to rent it out to the renter
 				@t.owner_confirmation = 1
 				@t.save
