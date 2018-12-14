@@ -40,7 +40,6 @@ class Messege ##################################### Messege
 
     def from_who 
         if from_id.nil?
-            return "Grandma"
         else 
             @P = User.first(e.id == self.from_ID)
             return @P.first_name + " " + @P.last_name
@@ -80,15 +79,6 @@ class Transaction ################################## TRANSACTION
     
 end 
 
-# class Pro ########################################## PRO
-#     include DataMapper::Resource
-#     property :id, Serial
-#     property :owner_id, Integer
-#     property :created_at, DateTime
-#     property :end_pro, DateTime 
-
-# end
-
 # Perform basic sanity checks and iniFtialize all relationships
 # Call this when you've defined all your models
 DataMapper.finalize
@@ -98,4 +88,3 @@ Item.auto_upgrade!
 User.auto_upgrade!
 Messege.auto_upgrade!
 Transaction.auto_upgrade!
-# Pro.auto_upgrade!
