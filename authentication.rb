@@ -1,6 +1,5 @@
 require 'sinatra'
-require_relative "user.rb"
-
+require_relative "models.rb"
 enable :sessions
 
 set :session_secret, 'super secret'
@@ -35,17 +34,17 @@ end
 
 
 post "/register" do
-	email = params[:email]
-	password = params[:password]
 
 	u = User.new
-	u.email = email.downcase
-	u.password =  password
+	u.email = params[:email]
+	u.password =  params[:password]
+	u.first_name = params[:first_name]
+	u.last_name = params[:last_name]
 	u.save
 
 	session[:user_id] = u.id
 
-	erb :"authentication/successful_signup"
+	erb :"dashboard"
 
 end
 
