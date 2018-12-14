@@ -128,103 +128,103 @@ end
 
 post "/rent_out/:id" do
 	authenticate!
-	@t = Transaction.new
-	@t.renters_id = current_user.id
-	@t.item_id = params[:id]
-	@t.owner_id = Item.get(params[:id]).owner_id
-	@t.renter_confirmation = 1
-	@t.save
+	@t = Transaction.first { |e| e.item_id == params[:id] }
+	if @t.nil?
+		@t = Transaction.new
+		@t.renters_id = current_user
+		@t.item_id = params[:id]
+		@t.owner_id = Item.get(params[:id]).owner_id
+		@t.renter_confirmation = 1
+		@t.save
 
-	if Transaction.find { |e| e == @t  }
-	# notify owner
-	@t.destroy
+		# notify owner
+		@L = Messege.new
+		@L.to_id = @t.owner_id
+		@L.statment = "Someone wants what your renting"
+		@L.save
 
-	@L = Messege.new
-	@L.to_id = @t.owner_id
-	@L.statment = "Currently Waiting for the Owner to Confirm Transaction"
-	@L.save
+		@K = Messege.new
+		@K.to_id = @t.renters_id
+		@K.statment = "Someone wants what your renting"
+		@K.save
 
-	redirect "/"
+		redirect "/dashboard"
 	else
-
-	# notify owner
-	@L = Messege.new
-	@L.to_id = @t.owner_id
-	@L.statment = "Someone want what your renting"
-	@L.save
-
-	redirect back
+		redirect "/"
 	end
 end
 
 post "/rent_confirm/:id" do
 	authenticate!
-	@t = Transaction.select { |e| e.item_id == :id }
-	if @t.owner_confirmation == 0 && current_user.id == @t.owner_id # owner Comfirms the request agreeing to the rental
-		@t.owner_confirmation = 1
-		@t.save
+	@t = Transaction.first{ |e| e.item_id == params[:id] }
 
-		@i = Item.select {|e| e.id == @t.item_id}
+	if @t
+		if current_user == @t.owner_id
+			if @t.owner_confirmation == 0 #the owner is agreeing to rent it out to the renter
+				@t.owner_confirmation = 1
+				@t.save
 
-		# notify the renter
-		@M = Messege.new
-		@M.to_id = @t.renters_id
-		@M.statment = "The owner has agreed to your request, Confirm you gain possesion of the the item"
-		@M.save
+				@i = Item.select {|e| e.id == @t.item_id}
 
-		redirect "/dashboard"
+				# notify the renter
+				@M = Messege.new
+				@M.to_id = @t.renters_id
+				@M.statment = "The owner has agreed to your request, Confirm you gain possesion of the the item"
+				@M.save
 
-	elsif @t.renter_confirmation == 1 && current_user.id  == @t.renters_id # The renter is confirming his possetion of the item	
-		@t.rent_out 
+				redirect "/dashboard"
+			elsif @t.owner_confirmation == 2 #owner comfirms return of item
+				@dt = time1.inspect - @t.DateTime
 
-		charging = Item.find { |e| @t.item_id }.cost_Day
-		our_tax = charging * 0.05
-		# charge a fee to the renter
+		 		#CHARGE THIS MANY DAYS
+		 		@days = @td.days + @td.month*30
+		 		# @itm = Item.select {|e| e.id == @t.item_id}
+		 		# @charge = @itm.cost_day * @days
+		 		# @HiC = @charge * 0.05 ### if pro charge less
+		 		# @LoC = @charge * 0.07 ### if not pro charge more 
+		 		#
+		 		# check if owner is pro, 
+		 		# => if pro pay @charge - @LoC
+		 		#else
+		 		# => pay @charge - @HiC
+		 		#
+		 		# check if renter is pro, 
+		 		# => if pro charge @charge + @LoC
+		 		#else
+		 		# => charge @charge + @HiC
 
-		### MAKE CHARGE
-		#IF SUCCESFUL CONTINUE ELSE TERMINATE TRANSACTON AND NOTIFY BOTH PARTIES
+		 		@t.destroy
 
-		@M = Messege.new
-		@M.to_id = @t.renters_id
-		charging
-		@M.statment = "You have been charged (charging + our_tax)"
-		@M.save
+				@M = Messege.new
+				@M.to_id = @t.renters_id
+				@M.statment = "Thank-you for renting with us, you wher charged (price)"
+				@M.save
 
-		# pay a fee to the owner
-		### MAKE PAYMENT
-		#IF SUCCESFUL CONTINUE ELSE TERMINATE TRANSACTON AND NOTIFY BOTH PARTIES && RETURN PAYMENT TO THE RENTER
-		@M = Messege.new
-		@M.to_id = @t.owner_id
-		@M.statment = "You have been payed (charging - our_tax)"
-		@M.save
+				@M = Messege.new
+				@M.to_id = @t.owner_id
+				@M.statment = "Thank-you for renting with us, you where payed (price)"
+				@M.save
 
-		@t.renter_confirmation = 2
-		@t.owner_confirmation = 2
+				redirect "/dashboard"
 
-		#flash success
-		redirect "/dashboard"
+			end					
+		elsif current_user == @t.renter_id
+			if @t.renter_confirmation == 1# The renter is confirming his possetion of the item	
+				@t.owner_confirmation = 2
+				@t.renter_confirmation = 2
 
-	elsif @t.owner_confirmation == 2 && current_user.id == @t.owner_id #owner comfirms return of item
-	 	@t.destroy
-	 	# Notify both parties
-		@M = Messege.new
-		@M.to_id = @t.renters_id
-		# charging
-		@M.statment = "Thank-you for renting with us"
-		@M.save
+				@t.created_at = DateTime
+				@t.renter_confirmation = 2
+				@t.owner_confirmation = 2
 
-		@M = Messege.new
-		@M.to_id = @t.owner_id
-		@M.statment = "Thank-you for renting with us"
-		@M.save
-
-		redirect "/dashboard"
-	
+				@t.save
+				redirect "/dashboard"
+			end		
+		end 		
 	else
-
-		redirect "/"	
+		redirect "/"
 	end
-end
+end 
 
 get "/mess&alerts" do
 	@messeges = Messege.select{ |mess| mess.to_id == current_user.id }

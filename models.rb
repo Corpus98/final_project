@@ -39,7 +39,7 @@ class Messege ##################################### Messege
     property :statment, String
 
     def from_who 
-        if from_ID == nil
+        if from_id.nil?
             return "Grandma"
         else 
             @P = User.first(e.id == self.from_ID)
@@ -77,6 +77,7 @@ class Transaction ################################## TRANSACTION
     property :created_at, DateTime
     property :owner_confirmation, Integer, :default => 0
     property :renter_confirmation, Integer, :default => 0
+    
 end 
 
 # class Pro ########################################## PRO

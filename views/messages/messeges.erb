@@ -3,7 +3,7 @@
 
         <%@messeges.each do |m|%>
         <tr valign="top">
-        <td><a> <% i.id %></a></td>
+        <td><a> <% m.id %></a></td>
 
         <th><td>From : <%=m.from_who%></td>
             <td>
@@ -16,7 +16,7 @@
         </th>
 
         <th span="2">
-            <td><form class="" action="/rent_confirm/<%= i.id %>" method="POST">
+            <td><form class="" action="/rent_confirm/<%= m.id %>" method="POST">
                 <button type="submit" name="button" class="btn btn-danger">Confirm</button>
             </form></td>
         </th>
